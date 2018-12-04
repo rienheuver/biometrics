@@ -35,6 +35,8 @@ for i = Id
 end
 idCountMap(currentId) = currentCount;
 
+disp('test')
+
 genuineScores = [];
 for i=1:length(idCountMap)-1
     for j=1:idCountMap(i)
