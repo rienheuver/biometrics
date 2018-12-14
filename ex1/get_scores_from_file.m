@@ -77,6 +77,47 @@ for i=1:length(idCountMap) % 1 -> 275
         end
     end
 end
+
 disp(imposterCounter);
 disp("Finished making imposter scores");
+%%
+disp("Plotting histograms");
+numberOfBins = 300;
+genuineHist = histogram(genuineScores, numberOfBins);
+hold on
+imposterHist = histogram(imposterScores, numberOfBins);
+hold off
+disp("Finished plotting histograms");
+%%
+threshold = -15;
+FMR = sum(imposterScores > threshold)/length(imposterScores);
+FNMR = sum(genuineScores < threshold)/length(genuineScores);
+DET = [];
+bestMatch = 1;
+EER = 0;
+bestThreshold = 0;
+for i=-60:.1:30
+    FMR = sum(imposterScores > i)/length(imposterScores);
+    FNMR = sum(genuineScores < i)/length(genuineScores);
+    possibleEER = abs(FMR - FNMR);
+    if possibleEER < bestMatch
+        bestMatch = possibleEER;
+        EER = FMR;
+        bestThreshold = i;
+    end
+    DET = [DET; [FMR,FNMR]];
+end
+disp(EER);
+disp(bestThreshold);
+figure;
+plot(DET(:,1),DET(:,2));
+title('DET');
+xlabel('FMR');
+ylabel('FNMR');
+
+figure;
+plot(DET(:,1),1-DET(:,2));
+title('ROC');
+xlabel('FMR');
+ylabel('TMR');
 %%
