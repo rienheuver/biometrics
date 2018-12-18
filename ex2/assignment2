@@ -1,0 +1,1 @@
+imshow(FaceData(39,3).Image);
