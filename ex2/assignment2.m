@@ -34,3 +34,5 @@ end
 
 
 covMatrix = 1/(n-1) * faceTrain0 * faceTrain0';
+
+%test

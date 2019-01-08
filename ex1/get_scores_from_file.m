@@ -9,7 +9,7 @@ Id = load('id.txt', '-ascii');
 nId = max(Id);
 Entries = (1:np);
 Ratio = np / nId;
-%%
+%% Creating a dictionary that links each individual to each of his scores
 fprintf(' Size of score matrix: %u x %u\n',np,nt);
 fprintf(' Number of identities: %u\n', nId);
 fprintf(' Ratio: %u\n', Ratio);
@@ -80,7 +80,7 @@ end
 
 disp(imposterCounter);
 disp("Finished making imposter scores");
-%%
+%% Plotting the histograms
 disp("Plotting histograms");
 numberOfBins = 300;
 genuineHist = histogram(genuineScores, numberOfBins);
@@ -88,7 +88,7 @@ hold on
 imposterHist = histogram(imposterScores, numberOfBins);
 hold off
 disp("Finished plotting histograms");
-%%
+%% plotting the perfomance characteristics based on a threshold
 threshold = -15;
 FMR = sum(imposterScores > threshold)/length(imposterScores);
 FNMR = sum(genuineScores < threshold)/length(genuineScores);
