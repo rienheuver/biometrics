@@ -86,6 +86,7 @@ imposterHist = histogram(imposterScores, numberOfBins);
 hold off
 disp("Finished plotting histograms");
 %% plotting the perfomance characteristics based on a threshold
+threshold = -15;
 FMR = [];
 FNMR = [];
 DET = [];
@@ -99,49 +100,32 @@ for i=-60:.1:30
     FNMR = [FNMR,[i; FNMR_current]];
     EER_current = abs(FMR_current - FNMR_current)
     EER = [EER,[i; EER_current]];
-    if EER_current < bestMatch
-        bestMatch = EER_current;
+    if EER < bestMatch
+        bestMatch = possibleEER;
+        EER = FMR_current;
         bestThreshold = i;
     end
     DET = [DET; [FMR_current,FNMR_current]];
 end
+%disp(EER);
 disp(bestThreshold);
 figure;
 plot(FMR(1,:),FMR(2,:));
-hold on;
-plot(FNMR(1,:),FNMR(2,:));
-title('FMR and FNMR for different thresholds');
+title('FMR for different thresholds');
 xlabel('Threshold');
-ylabel('Scores');
+ylabel('FMR');
 figure;
-plot(DET(:,1),(DET(:,2)));
+plot(FNMR(1,:),FNMR(2,:));
+title('FNMR for different thresholds');
+xlabel('Threshold');
+ylabel('FNMR');
+figure;
+plot(DET(:,1),DET(:,2));
 title('DET');
 xlabel('FMR');
 ylabel('FNMR');
-%Lets see about the logs
-figure;
-plot(DET(:,1),log(DET(:,2)));
-title('log in Y');
-xlabel('FMR');
-ylabel('FNMR');
-figure;
-plot(log(DET(:,1)),DET(:,2));
-title('log in X');
-xlabel('FMR');
-ylabel('FNMR');
-figure;
-plot(log(DET(:,1)),log(DET(:,2)));
-title('log in X and Y');
-xlabel('FMR');
-ylabel('FNMR');
-%plot the ROC
 figure;
 plot(DET(:,1),1-DET(:,2));
 title('ROC');
 xlabel('FMR');
 ylabel('TMR');
-figure();
-plot(EER(1,:),EER(2,:));
-title('EER for different thresholds');
-xlabel('Threshold');
-ylabel('EER');
