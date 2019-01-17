@@ -32,9 +32,19 @@ for i = Id
     end
 end
 idCountMap(currentId) = currentCount;
-
 %%
-genuineScores = zeros(1, 1780);
+counter = 0;
+for i=1:length(idCountMap) % 275 -> person 2
+    for j=1:idCountMap(i) % 3 -> 2
+        for k=1:idCountMap(i) % 3 -> 3
+            if k > j
+                counter = counter + 1;
+            end
+        end
+    end
+end
+%%
+genuineScores = zeros(1, counter);
 genuineCounter = 0;
 for i=1:length(idCountMap) % 275 -> person 2
     for j=1:idCountMap(i) % 3 -> 2

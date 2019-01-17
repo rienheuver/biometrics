@@ -9,6 +9,7 @@ l = (subjectCount/2) * facesPerSubject; %number of samples for testing
 faceTrain = zeros(d, n); % n*d matrix
 faceTest = zeros(d, l); % l%d matrix
 Id = zeros(1, l); % l%1 matrix
+%%
 for i=1:subjectCount/2
     for j=1:facesPerSubject
         imageDouble = double(FaceData(i,j).Image)/255;
@@ -25,6 +26,8 @@ for i=(subjectCount/2 + 1):subjectCount
         Id(:, (i-21)*10 + j) = i;
     end
 end
+%%
+image(FaceData(1,1).Image);
 %%
 phi0 = mean(faceTrain,2); %column vector with the mean value for each pixel
 faceTrain0 = zeros(d, n);
@@ -47,3 +50,29 @@ for i = 1:d
 end
 figure();
 plot(m,v)
+%% Show eigen faces
+% Show mean face
+figure, imagesc(reshape(phi0, [56,46]));
+
+m = 90;
+phi_m = eig_vec(:,1:m);
+% Show first 10 faces
+for i=1:10
+    faceColumn = phi_m(:,i);
+    figure, imagesc(reshape(faceColumn,[56,46]));
+end
+%% Calculate scores
+dissimilarityScores = zeros(l,l);
+matrixA = zeros(m,l);
+for i=1:l
+    matrixA(:, i) = phi_m'*(faceTest(:,i)-phi0);
+end
+
+disSimScore = zeros(l,l);
+for i=1:l
+    for j=1:l
+        disSimScore(i,j) = norm(matrixA(:,i) - matrixA(:, j));
+    end
+end
+%%
+get_scores_from_file(disSimScore, Id);
