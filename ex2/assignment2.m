@@ -27,7 +27,11 @@ for i=(subjectCount/2 + 1):subjectCount
     end
 end
 %%
-image(FaceData(1,1).Image);
+for i=1:5
+    for j=1:10
+        figure, imshow(FaceData(i,j).Image);
+    end
+end
 %%
 phi0 = mean(faceTrain,2); %column vector with the mean value for each pixel
 faceTrain0 = zeros(d, n);
